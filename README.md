@@ -2,7 +2,7 @@
 
 There is the code of the paper ``Rethinking Performance Estimation in Neural Architecture Search`` for searching. We provide the implementations of Reinforcement Learning(RL), Evolution Algorithm(EA), Random Search(RS) and Differentiable Architecture Search(DARTS) coped with the proposed ``BPE`` method.
 
-Two hyperparameter settings, termed **BPE1** and **BPE2** respectively, are defined in ``param_setting.py``.
+Two hyperparameter settings for searching, named **BPE1** and **BPE2** respectively, are defined in ``param_setting.py``. ``BPE1`` trains a network in **0.33 GPU** hours while ``BPE2`` costs **0.5 GPU hours**.
 
 ## Reinforcement Learning
 
