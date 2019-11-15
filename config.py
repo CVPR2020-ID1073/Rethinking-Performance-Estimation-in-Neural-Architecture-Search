@@ -102,7 +102,7 @@ class AugmentConfig(BaseConfig):
         parser.add_argument('--fp16', type=bool, default=False, help='flag of using 16bit or not')
         parser.add_argument('--genotype', type=str, default=None, help='Cell genotype')
         parser.add_argument('--save_path', default=None, help='save_path')
-        parser.add_argument('--save_dir', default='/output/', help='save_dir')
+        parser.add_argument('--save_dir', default='experiment/', help='save_dir')
         parser.add_argument('--file', default='', help='file_save_')
         parser.add_argument('--i', type=int,default=0)
 

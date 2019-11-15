@@ -50,7 +50,7 @@ def main():
     input_size = config.image_size
     
     model = AugmentCNN(input_size, input_channels, config.init_channels, n_classes, config.layers,
-                       use_aux, config.genotype)
+                       use_aux, eval(config.genotype))
     # model size
     mb_params = utils.param_size(model)
     logger.info("Model size = {:.3f} MB".format(mb_params))

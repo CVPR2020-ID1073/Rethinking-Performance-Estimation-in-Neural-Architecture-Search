@@ -26,7 +26,7 @@ parser = argparse.ArgumentParser('EA')
 parser.add_argument('--run_id', default=0, type=int, help='to identify the experiments')
 parser.add_argument('--seed', default=2, type=int, help='random setting')
 parser.add_argument('--param', type=str, choices=['BPE1', 'BPE2'], required=True, help='the hyperparameters for training')
-parser.add_argument('--gpu_id', default=0, type=int, 'the id of gpu')
+parser.add_argument('--gpu_id', default=0, type=int, help='the id of gpu')
 parser.add_argument('--output_path', default='experiment/RL', type=str, help='the path to save the results')
 parser.add_argument('--data_path', default='data/', type=str, help='the path of data')
 parser.add_argument('--n_iters', default=100, type=int, help='number of iterations for optimization method')
@@ -201,11 +201,11 @@ class NASCifar10(object):
 
         return res
     
-    def objective_function(self, sample, name, logger):
+    def objective_function(self, sample, name):
         if not isinstance(sample[0], int):
             sample = [s.numpy()[0] for s in sample]
             
-        acc, geno = evaluation(sample, name, logger)
+        acc, geno = evaluation(sample, name)
         
         self.val_acc.append(float(acc))
         self.genotypes.append(str(geno))
@@ -236,8 +236,8 @@ class Model(object):
         return '{0:b}'.format(self.arch)
 
 
-def train_and_eval(config, name, logger):
-    error = b.objective_function(config, name, logger)
+def train_and_eval(config, name):
+    error = b.objective_function(config, name)
     return 1 - error
 
 
@@ -270,7 +270,7 @@ def mutate_arch(parent_arch):
     return child_arch
 
 
-def regularized_evolution(cycles, population_size, sample_size, logger):
+def regularized_evolution(cycles, population_size, sample_size):
 
     population = collections.deque()
     
@@ -283,7 +283,7 @@ def regularized_evolution(cycles, population_size, sample_size, logger):
         logger.info('population {}'.format(pop_n))
         model = Model()
         model.arch = random_architecture()
-        model.accuracy = train_and_eval(arch_to_sample(model.arch), name='population_%03d' % pop_n, logger=logger)
+        model.accuracy = train_and_eval(arch_to_sample(model.arch), name='population_%03d' % pop_n)
         population.append(model)
         history.append(model)
         pop_n += 1
@@ -301,7 +301,7 @@ def regularized_evolution(cycles, population_size, sample_size, logger):
 
         child = Model()
         child.arch = mutate_arch(parent.arch)
-        child.accuracy = train_and_eval(arch_to_sample(child.arch), name='cycles_%03d' % iter_n, logger=logger)
+        child.accuracy = train_and_eval(arch_to_sample(child.arch), name='cycles_%03d' % iter_n)
         population.append(child)
         history.append(child)
         
@@ -316,8 +316,7 @@ cs = b.get_configuration_space()
 
 history = regularized_evolution(cycles=args.n_iters, 
                                 population_size=args.pop_size, 
-                                sample_size=args.sample_size, 
-                                logger=logger)
+                                sample_size=args.sample_size)
 
 res = b.get_results()
 

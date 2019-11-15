@@ -42,18 +42,18 @@ python parse_json.py --method=EA --param=BPE1/BPE2 --run_id=0
 
 1. Randomly generate 100 cell architectures
 ```bash
-python random_darts_generator.py
+python random_darts_generator.py --num=100
 ```
 
 2. Train these random architectures from scratch
 
 - For BPE1: 
 ```bash
-python augment.py --name=RS_BPE1 --file=random_darts_architecture.txt --data_path=data/ --batch_size=128 --lr=0.03 --layers=6 --init_channels=8 --epochs=10 --cutout_length=0 --image_size=16
+python augment.py --name=RS_BPE1 --file=random_darts_architecture.txt --data_path=data/ --save_path=experiment/ --batch_size=128 --lr=0.03 --layers=6 --init_channels=8 --epochs=10 --cutout_length=0 --image_size=16
 ```
 - For BPE2: 
 ```bash
-python augment.py --name=RS_BPE2 --file=random_darts_architecture.txt --data_path=data/ --batch_size=128 --lr=0.03 --layers=16 --init_channels=16 --epochs=30 --cutout_length=0 --image_size=16
+python augment.py --name=RS_BPE2 --file=random_darts_architecture.txt --data_path=data/ --save_path=experiment/ --batch_size=128 --lr=0.03 --layers=16 --init_channels=16 --epochs=30 --cutout_length=0 --image_size=16
 ```
 
 

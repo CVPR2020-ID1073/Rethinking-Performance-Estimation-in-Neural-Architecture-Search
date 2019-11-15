@@ -6,7 +6,7 @@ import torch
 import torchvision.datasets as dset
 import numpy as np
 import preproc
-
+from genotypes import *
 
 def get_data(dataset, data_path, input_size, cutout_length, validation):
     """ Get torchvision dataset """
@@ -161,9 +161,40 @@ def convert_sample_to_genotype(array, l=28):
         flag = flag+node+2
         geno_reduce.append(geno_curr)
 
-    genotype_str = "Genotype(normal=[{}, {}, {}, {}], normal_concat=range(2, 6), "
-                   "reduce=[{}, {}, {}, {}], reduce_concat=range(2, 6))".format(geno_normal[0], \
+    genotype_str = "Genotype(normal=[{}, {}, {}, {}], normal_concat=range(2, 6), reduce=[{}, {}, {}, {}], reduce_concat=range(2, 6))".format(geno_normal[0], \
                     geno_normal[1], geno_normal[2], geno_normal[3], geno_reduce[0], geno_reduce[1], \
                     geno_reduce[2], geno_reduce[3])
     
     return genotype_str
+
+
+def darts_weight_unpack(weight, n_nodes):
+    w_dag = []
+    start_index = 0
+    end_index = 2
+    for i in range(n_nodes):
+        w_dag.append(weight[start_index:end_index])
+        start_index = end_index
+        end_index += 3 + i
+    return w_dag
+
+
+def one_hot_to_index(one_hot_matrix):
+    return np.array([np.where(r == 1)[0][0] for r in one_hot_matrix])
+
+
+def index_to_one_hot(index_vector, C):
+    return np.eye(C)[index_vector.reshape(-1)]
+
+
+def netParams(model):
+    total_paramters = 0
+    for parameter in model.parameters():
+        i = len(parameter.size())
+        p = 1
+        for j in range(i):
+            p *= parameter.size(j)
+        total_paramters += p
+
+    return total_paramters
+
