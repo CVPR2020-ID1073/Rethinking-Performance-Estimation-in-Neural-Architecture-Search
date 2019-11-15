@@ -6,23 +6,36 @@ Two hyperparameter settings, termed BPE1 and BPE2 respectively, are defined in `
 
 ## Reinforcement Learning
 
+1. Train
 ```bash
 git clone https://github.com/CVPR2020-ID1073/Rethinking-Performance-Estimation-in-Neural-Architecture-Search.git
 cd Rethinking-Performance-Estimation-in-Neural-Architecture-Search
 
 python run_rl.py --run_id=0 --output_path=experiment/RL --n_iters=100 --lr=1e-1 --param=BPE1/BPE2
 ```
-
 The parameter ``--n_iters`` indicates the number of iterations, **100** for default setting and the ``--lr`` is the learning rate for agent optimization.
+
+2. Parse the best architecture from Json file
+```bash
+python parse_json.py --method=RL --param=BPE1/BPE2 --run_id=0
+```
 
 
 ## Evolution Algorithm
 
+1. Train
 ```bash
 python run_evolution.py --run_id=0 --output_path=experiment/EA --n_iters=100 --pop_size=50 --param=BPE1/BPE2
 ```
-
 The parameter ``--n_iters`` indicates the total number of iterations, while the ``--pop_size`` is the number iterations to generate populations.
+
+2. Sampling the best architecture from supernet
+
+- sampling 10 nets from the best supernet
+```bash
+python parse_json.py --method=EA --param=BPE1/BPE2 --run_id=0
+```
+- augment the sampled nets as the same way with **Random Search**, and find the best cell architecture
 
 
 ## Random Search
